@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        <meta name="color-scheme" content="light dark">
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+
+        <script src="bootstrap/js/bootstrap.js"></script>
+        <script src="js/jquery.js"></script>
+        <script src="cordova.js"></script>
+        
+
+        <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
+        <title>Calculo do IMC</title>
+        <style>
+            body{
+                background-color:lightgray;
+            }
+        </style>
+    </head>
+    <body>
+
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <div class="container-fluid">
+                      <a class="navbar-brand" href="calcular.html">Calculo do IMC</a>
+                      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                      </button>
+                      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                        <ul class="navbar-nav">
+                          <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="calcular.html">Calcular</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="consultar.html">Consultar</a>
+                          </li>
+                          <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              Opções
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                              <li><a class="dropdown-item" href="#">Alterar dados</a></li>
+                              <li><a class="dropdown-item" href="#">Sair</a></li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </nav>
+            <div class="container">
+                <img src="img/Icone.png" width="100" height="100" style="display: block; margin-right: auto; margin-top: 10px; margin-left: auto;">
+                <p>
+                    <form>
+                       <div class="form-group">
+                         <label for="exampleFormControlInput1"><strong>Nome:</strong></label>
+                         <input type="text" class="form-control" id="txtNome">
+                       </div>
+                       <div class="form-group">
+                         <label for="exampleFormControlInput1"><strong>Telefone:</strong></label>
+                         <input type="tel" class="form-control" id="txtTelefone"  placeholder="(xx)xxxxx-xxxx">
+                       </div>
+                       <div class="form-group">
+                         <label for="exampleFormControlInput1"><strong>Email:</strong></label>
+                         <input type="text" class="form-control" id="txtEmail">
+                       </div>
+                       <div class="form-group">
+                         <label for="exampleFormControlInput1"><strong>Senha:</strong></label>
+                         <input type="password" class="form-control" id="txtSenha">
+                       </div>
+                       
+                     <button type="button" id="btnInserir" class="btn btn-success btn-primary" style="margin-top: 15px;">Atualizar</button>
+                   </form>
+           </p>
+        </div>
+    </body>
+</html>
