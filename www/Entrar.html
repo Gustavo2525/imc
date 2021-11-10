@@ -11,7 +11,7 @@
 
         <script src="bootstrap/js/bootstrap.js"></script>
         <script src="js/jquery.js"></script>
-        <script src="cordova.js"></script>
+        <script src="./../cordova.js"></script>
         
 
         <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
@@ -39,9 +39,43 @@
                           <input type="password" class="form-control" id="txtSenha">
                         </div>
                         
-                      <button type="button" id="btnInserir" class="btn btn-success btn-primary" style="margin-top: 15px;">Entrar</button>
+                      <button type="button" id="btnEntrar" class="btn btn-success btn-primary" style="margin-top: 15px;" onclick="entrar()">Entrar</button>
                     </form>
             </p>
         </div>
+
+        <script>
+          const firebaseConfig = {
+                apiKey: "AIzaSyC67ZTTwtscUU072Ko11PMkqtcRB0tFIrc",
+                authDomain: "calcular-o-imc-165a9.firebaseapp.com",
+                projectId: "calcular-o-imc-165a9",
+                storageBucket: "calcular-o-imc-165a9.appspot.com",
+                messagingSenderId: "173503704659",
+                appId: "1:173503704659:web:8d2144af7168e7b7db20a6",
+                measurementId: "G-YRXP90EGDK"
+              };
+
+              firebase.initializeApp(firebaseConfig);
+
+              function entrar(){
+                var txtemail = document.getElementById('txtEmail');
+                var email = txtemail.value;
+
+                var txtsenha = document.getElementById('txtSenha');
+                var senha = txtsenha.value;
+
+                firebase.auth().signInWithEmailAndPassword(email, senha)
+                .then((userCredential) => {
+                  // Signed in
+                  var user = userCredential.user;
+                  window.location.href = cordova.file.applicationDirectory + "www/calcular.html";
+                  // ...
+                })
+                .catch(loginError => {
+                    console.log(loginError);
+                    alert('Falha no login');
+                });
+              }
+        </script>
     </body>
 </html>
