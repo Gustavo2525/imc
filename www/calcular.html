@@ -11,7 +11,7 @@
 
         <script src="bootstrap/js/bootstrap.js"></script>
         <script src="js/jquery.js"></script>
-        <script src="cordova.js"></script>
+        <script src="./../cordova.js"></script>
         
 
         <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
@@ -46,7 +46,7 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                               <li><a class="dropdown-item" href="editar.html">Alterar dados</a></li>
-                              <li><a class="dropdown-item" href="#">Sair</a></li>
+                              <li><a class="dropdown-item" href="#" onclick="sair()">Sair</a></li>
                             </ul>
                           </li>
                         </ul>
@@ -65,11 +65,121 @@
                           <label for="exampleFormControlInput1"><strong>Digite sua altura(Metros):</strong></label>
                           <input type="number" class="form-control" id="txtaltura" placeholder="1.80m (somente o número) ">
                         </div>
+                        <div id="res"></div>
                         
-                      <button type="button" id="btnInserir" class="btn btn-success btn-primary" style="margin-top: 15px;">Calcular</button>
+                      <button type="button" id="btnCalc" class="btn btn-success btn-primary" style="margin-top: 15px;" onclick="calc()">Calcular</button>
                     </form>
             </p>
             <div id="resultado"></div>
         </div>
+        <script>
+          
+
+          const firebaseConfig = {
+                apiKey: "AIzaSyC67ZTTwtscUU072Ko11PMkqtcRB0tFIrc",
+                authDomain: "calcular-o-imc-165a9.firebaseapp.com",
+                projectId: "calcular-o-imc-165a9",
+                storageBucket: "calcular-o-imc-165a9.appspot.com",
+                messagingSenderId: "173503704659",
+                appId: "1:173503704659:web:8d2144af7168e7b7db20a6",
+                measurementId: "G-YRXP90EGDK"
+              };
+
+              firebase.initializeApp(firebaseConfig);
+              
+
+              function calc(){
+                var txtpeso = document.getElementById('txtpeso');
+                var peso = txtpeso.value;
+
+                var txtsenha = document.getElementById('txtaltura');
+                var altura = txtaltura.value;
+
+                var calcular = peso / altura**2;
+
+                var arren = calcular.toFixed(1);
+
+                var res = document.getElementById('res');
+
+                res.innerHTML = `<p> seu IMC é ${arren} Kg/m²<p>`
+                var imcres = '';
+                 
+
+                if(arren<18.5){
+                  res.innerHTML += `<p> Você está abaixo do peso <p>`
+                    var imcres = 'Abaixo do peso';
+
+                }
+                else if(arren>=18.5 && arren<=24.9){
+                  res.innerHTML += `<p> Você está no peso ideial <p>`
+                    var imcres = 'Peso ideal';
+
+                }
+                else if(arren>=25 && arren<=29.9){
+                  res.innerHTML += `<p> Você está com sobrepeso <p>`
+                  var imcres = 'Sobrepeso';
+
+                }
+                else if(arren>=30 && arren<=34.9){
+                  res.innerHTML += `<p> Você está com obesidade grau I <p>`
+                    var imcres = 'Obesidade grau I';
+
+                }
+                else if(arren>=35 && arren<=39.9){
+                  res.innerHTML += `<p> Você está com obesidade grau II <p>`
+                    var imcres = 'Obesidade grau II';
+
+                } 
+                 else if(arren>=40){
+                  res.innerHTML += `<p> Você está com obesidade grau III <p>`
+                    var imcres = 'Obesidade grau III';
+                }
+
+                
+                firebase.auth().onAuthStateChanged((user) => {
+                  if (user) {
+                    // User is signed in, see docs for a list of available properties
+                    // https://firebase.google.com/docs/reference/js/firebase.User
+                    var uid = user.uid;
+                    console.log(uid);
+                    
+                    firebase.firestore().collection("usuario").doc(uid).update({
+                      alturaa: altura,
+                      pesoo: peso,
+                      imc: arren,
+                      resultado: imcres
+
+                    })
+                  } else {
+                    // User is signed out
+                    // ...
+                  }
+                });
+              }
+
+              function sair(){
+                firebase.auth().onAuthStateChanged((user) => {
+                  if (user) {
+                    // User is signed in, see docs for a list of available properties
+                    // https://firebase.google.com/docs/reference/js/firebase.User
+                    var uid = user.uid;
+                    console.log(uid);
+                    
+                    firebase.auth().signOut().then(() => {
+                  console.log('usuario deslogado');
+                  window.location.href = cordova.file.applicationDirectory + "www/index.html";
+               
+
+                }).catch((error) => {
+              
+
+                    });
+                  } else {
+                    // User is signed out
+                    // ...
+                  }
+                });
+              }
+        </script>
     </body>
 </html>
