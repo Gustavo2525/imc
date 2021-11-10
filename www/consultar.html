@@ -27,32 +27,32 @@
     <body>
 
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                    <div class="container-fluid">
-                      <a class="navbar-brand" href="calcular.html">Calculo do IMC</a>
-                      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                      </button>
-                      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                        <ul class="navbar-nav">
-                          <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="calcular.html">Calcular</a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" href="consultar.html">Consultar</a>
-                          </li>
-                          <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                              Opções
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                              <li><a class="dropdown-item" href="#">Alterar dados</a></li>
-                              <li><a class="dropdown-item" href="#">Sair</a></li>
-                            </ul>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </nav>
+        <div class="container-fluid">
+          <a class="navbar-brand" href="calcular.html">Calculo do IMC</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="calcular.html">Calcular</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="consultar.html">Consultar</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Opções
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <li><a class="dropdown-item" href="editar.html">Alterar dados</a></li>
+                  <li><a class="dropdown-item" href="#" onclick="sair()">Sair</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
             <div class="container">
                 
                 <img src="img/Icone.png" width="100" height="100" style="display: block; margin-right: auto; margin-top: 10px; margin-left: auto;">
@@ -77,10 +77,68 @@
                                 </tbody>
                             </table>
                         </div>
-                        <button type="button" id="btnInserir" class="btn btn-success btn-primary" style="margin-top: 15px;">Buscar</button>
+                        <button type="button" id="btnInserir" class="btn btn-success btn-primary" style="margin-top: 15px;" onclick="consulta()">Buscar</button>
                         </div>
                     </div>
                 </div>
         </div>
+        <script>
+           const firebaseConfig = {
+                apiKey: "AIzaSyC67ZTTwtscUU072Ko11PMkqtcRB0tFIrc",
+                authDomain: "calcular-o-imc-165a9.firebaseapp.com",
+                projectId: "calcular-o-imc-165a9",
+                storageBucket: "calcular-o-imc-165a9.appspot.com",
+                messagingSenderId: "173503704659",
+                appId: "1:173503704659:web:8d2144af7168e7b7db20a6",
+                measurementId: "G-YRXP90EGDK"
+              };
+
+              firebase.initializeApp(firebaseConfig);
+
+              function consulta(){
+
+                  firebase.firestore().collection("usuario").get()
+                  .then((querySnapshot) => {
+                      querySnapshot.forEach((doc) => {
+                          console.log(doc.id, " => ", doc.data());
+                          $("#TableData").append("<tr>");
+                          $("#TableData").append("<td scope='col'>" + doc.data().name + "</td>");
+                          $("#TableData").append("<td scope='col'>" + doc.data().emaill + "</td>");
+                          $("#TableData").append("<td scope='col'>" + doc.data().pesoo + "</td>");
+                          $("#TableData").append("<td scope='col'>" + doc.data().alturaa + "</td>");
+                          $("#TableData").append("<td scope='col'>" + doc.data().imc + "</td>");
+                          $("#TableData").append("<td scope='col'>" + doc.data().resultado + "</td>");
+                          $("#TableData").append("</tr>");
+                      });
+                  })
+                  .catch((error) => {
+                      console.log("Error getting documents: ", error);
+                  });
+              }
+
+              function sair(){
+                firebase.auth().onAuthStateChanged((user) => {
+                  if (user) {
+                    // User is signed in, see docs for a list of available properties
+                    // https://firebase.google.com/docs/reference/js/firebase.User
+                    var uid = user.uid;
+                    console.log(uid);
+                    
+                    firebase.auth().signOut().then(() => {
+                  console.log('usuario deslogado');
+                  window.location.href = cordova.file.applicationDirectory + "www/index.html";
+               
+
+                }).catch((error) => {
+              
+
+                    });
+                  } else {
+                    // User is signed out
+                    // ...
+                  }
+                });
+              }
+        </script>
     </body>
 </html>
