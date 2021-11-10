@@ -11,7 +11,7 @@
 
         <script src="bootstrap/js/bootstrap.js"></script>
         <script src="js/jquery.js"></script>
-        <script src="cordova.js"></script>
+        <script src="./../cordova.js"></script>
         
 
         <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
@@ -47,14 +47,70 @@
                           <input type="password" class="form-control" id="txtSenha">
                         </div>
                         
-                      <button type="button" id="btnInserir" class="btn btn-success btn-primary" style="margin-top: 15px;" onclick="inserir()" >Cadastrar</button>
+                      <input type="button" id="btnInserir" class="btn btn-success btn-primary" style="margin-top: 15px;" onclick="inserir()" value="Cadastrar">
                     </form>
             </p>
         </div>
 
         <script>
-             
-        
-        </script>
+             const firebaseConfig = {
+                apiKey: "AIzaSyC67ZTTwtscUU072Ko11PMkqtcRB0tFIrc",
+                authDomain: "calcular-o-imc-165a9.firebaseapp.com",
+                projectId: "calcular-o-imc-165a9",
+                storageBucket: "calcular-o-imc-165a9.appspot.com",
+                messagingSenderId: "173503704659",
+                appId: "1:173503704659:web:8d2144af7168e7b7db20a6",
+                measurementId: "G-YRXP90EGDK"
+              };
+
+              firebase.initializeApp(firebaseConfig);
+
+              
+
+
+              function inserir(){
+                var txtemail = document.getElementById('txtEmail');
+              var email = txtemail.value;
+
+              var txtsenha = document.getElementById('txtSenha');
+              var senha = txtsenha.value;
+
+              var txtnome = document.getElementById('txtNome');
+              var nome = txtnome.value;
+
+              var txttelefone = document.getElementById('txtTelefone');
+              var tel = txttelefone.value;
+
+                var db = firebase.firestore();
+                var auth = firebase.auth();
+
+                firebase.auth().createUserWithEmailAndPassword(email, senha)
+                .then((userCredential) => {
+                  var user = userCredential.user;
+                  var auth = firebase.auth().currentUser;
+                  var a = auth.uid;
+                  console.log(a);
+
+                  db.collection("usuario").doc(a).set({
+                    name: nome,
+                    telefone: tel,
+                    emaill: email
+                }).then((gusta)=> {
+                  window.location.href = cordova.file.applicationDirectory + "www/Entrar.html";
+                })
+               
+                 
+                })
+                .catch((error) => {
+                  if (error.code == 'auth/email-already-in-use') {
+                        alert('Esse e-mail já está em uso por outro usuário')
+                    } else {
+                        alert(error.message);
+                    }
+                    console.log(error);
+                });
+                
+              }
+      </script>
     </body>
 </html>
